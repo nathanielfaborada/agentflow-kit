@@ -253,9 +253,70 @@ const SQUAD_PRESETS = {
   },
 };
 
+const AI_MODEL_PROVIDERS = {
+  inherit: {
+    id: 'inherit',
+    name: 'Universal Auto-Inherit (inherit)',
+    badge: 'RECOMMENDED',
+    description: 'Dynamic: automatically adopts the running model (Claude, Gemini, GPT-4, Cursor, etc.)',
+    modelId: 'inherit',
+    effort: 'medium',
+    provider: 'universal',
+  },
+  claude_37_sonnet: {
+    id: 'claude_37_sonnet',
+    name: 'Anthropic Claude 3.7 Sonnet',
+    description: 'Premier coding and reasoning model for Claude Code, Cursor, and Anthropic workflows',
+    modelId: 'claude-3-7-sonnet',
+    effort: 'high',
+    provider: 'anthropic',
+  },
+  claude_35_sonnet: {
+    id: 'claude_35_sonnet',
+    name: 'Anthropic Claude 3.5 Sonnet',
+    description: 'High-speed, benchmark-leading coding assistant for Anthropic ecosystems',
+    modelId: 'claude-3-5-sonnet',
+    effort: 'high',
+    provider: 'anthropic',
+  },
+  gemini_flash: {
+    id: 'gemini_flash',
+    name: 'Google Gemini 3.8 Flash (Antigravity default)',
+    description: 'Ultra-fast sub-second latency agent model optimized for Antigravity multi-agent systems',
+    modelId: 'gemini-3.8-flash',
+    effort: 'medium',
+    provider: 'google',
+  },
+  gemini_pro: {
+    id: 'gemini_pro',
+    name: 'Google Gemini 2.5 Pro (Deep Architecture Reasoning)',
+    description: 'Comprehensive reasoning model for complex architectural refactoring',
+    modelId: 'gemini-2.5-pro',
+    effort: 'high',
+    provider: 'google',
+  },
+  gpt_4o: {
+    id: 'gpt_4o',
+    name: 'OpenAI GPT-4o',
+    description: 'Omni-model for OpenAI API, ChatGPT, and Codex workflows',
+    modelId: 'gpt-4o',
+    effort: 'medium',
+    provider: 'openai',
+  },
+  deepseek: {
+    id: 'deepseek',
+    name: 'DeepSeek-V3 / R1 Reasoner',
+    description: 'Open-weights reasoning powerhouse for local and hosted DeepSeek pipelines',
+    modelId: 'deepseek-reasoner',
+    effort: 'high',
+    provider: 'deepseek',
+  },
+};
+
 module.exports = {
   SDLC_METHODOLOGIES,
   TECH_STACK_PRESETS,
   COLOR_PALETTES,
   SQUAD_PRESETS,
+  AI_MODEL_PROVIDERS,
 };

@@ -89,24 +89,42 @@ If you are already inside an AI coding assistant (Cursor, Antigravity, Claude, C
 
 ---
 
+## Dynamic AI Ecosystem Auto-Detection & Cross-Platform Bridges
+
+`agentflow-kit` automatically inspects your workspace and environment variables to configure your active AI engine dynamically:
+
+- **Anthropic Claude (Claude Code, Desktop, Sonnet 3.7 / 3.5)**: Automatically creates `CLAUDE.md` in root and configures all agent YAMLs with `claude-3-7-sonnet`.
+- **Cursor AI**: Automatically generates `.cursorrules` linked to your design system and state ledger.
+- **GitHub Copilot**: Automatically generates `.github/copilot-instructions.md`.
+- **Google Antigravity & Gemini**: Automatically configures full agent YAML definitions.
+- **Universal Auto-Inherit (`inherit`)**: Dynamically adopts whichever model runs the workspace.
+
+---
+
 ## What Gets Generated
 
-Your workspace receives a structured `.agents/` governance directory:
+Your workspace receives a complete cross-platform AI governance architecture:
 
 ```text
-.agents/
-├── rules/
-│   └── AGENTS.md                  # Master operational protocol and boundary matrix
-├── workflow-contract.md           # Immutable state ledger recording sprint handshakes
-├── design-system/
-│   ├── tech-stack.yaml            # Single source of truth for dependencies
-│   ├── color-palette.yaml         # CSS variables and strict token definitions
-│   ├── typography.yaml            # Modular font scale and typography tokens
-│   └── design-pattern.yaml        # Component architecture guidelines
-├── SDLC/
-│   └── PHASE-GATES.md             # Strict sign-off checklists for each phase
-└── project-roles/
-    └── ROLES.md                   # Strict permitted and prohibited edit scopes
+├── CLAUDE.md                          # Claude AI root workspace instructions
+├── .cursorrules                       # Cursor AI root governance rules
+├── .github/
+│   └── copilot-instructions.md        # GitHub Copilot custom instructions
+└── .agents/
+    ├── rules/
+    │   └── AGENTS.md                  # Master operational rules & boundary matrix
+    ├── workflow-contract.md           # Immutable state ledger recording sprint handshakes
+    ├── design-system/
+    │   ├── tech-stack.yaml            # Tech stack architect agent definition
+    │   ├── color-palette.yaml         # Color tokens & WCAG compliance agent definition
+    │   ├── typography.yaml            # Modular font scale agent definition
+    │   └── design-pattern.yaml        # Component architecture agent definition
+    ├── SDLC/
+    │   ├── PHASE-GATES.md             # Strict sign-off checklists for each phase
+    │   └── 01-concept-requirements.yaml ... 06-review-maintenance.yaml
+    └── project-roles/
+        ├── ROLES.md                   # Permitted & prohibited edit scopes
+        └── ProductOwnerAgent.yaml ... SupportEngineerAgent.yaml
 ```
 
 ---

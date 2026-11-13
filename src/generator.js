@@ -48,6 +48,12 @@ function generateAgentsDirectory(targetDir, config) {
     borderInteractive: '#8A7463',
   };
   const sdlc = config.sdlc || SDLC_METHODOLOGIES.scrum;
+  const aiModel = config.aiModel || {
+    id: 'inherit',
+    provider: 'Universal Auto-Inherit',
+    modelId: 'inherit',
+    effort: 'medium',
+  };
 
   const generatedFiles = [];
 
@@ -66,6 +72,7 @@ This document is the primary governing authority for all AI agents working on ${
 
 ## 1. Governance Architecture & SDLC Framework
 
+- **Active AI Runtime / Engine**: ${aiModel.provider || aiModel.name || aiModel.modelId} (\`${aiModel.modelId}\`)
 - **Active SDLC Framework**: ${sdlc.name}
 - **Operating Methodology**: ${sdlc.description}
 - **Lifecycle Flow**: \`${sdlc.flow}\`
@@ -187,8 +194,8 @@ This ledger records the formal sign-offs between autonomous roles. No agent may 
   const techStackYaml = `name: Frontend Tech Stack Architect
 description: Enforces ${stack.framework}, ${stack.bundler}, ${stack.styling}, and static or server architecture boundaries with zero runtime leaks.
 model:
-  id: gemini-3.8-flash
-  effort: medium
+  id: ${aiModel.modelId}
+  effort: ${aiModel.effort || 'medium'}
 multiagent:
   type: multiagent_20261001
   workflows:
@@ -246,8 +253,8 @@ metadata:
   const colorPaletteYaml = `name: ${palette.name} Color Palette Architect
 description: Enforces ${palette.name} design tokens for Light and Dark modes with strict WCAG AA/AAA compliance.
 model:
-  id: gemini-3.8-flash
-  effort: medium
+  id: ${aiModel.modelId}
+  effort: ${aiModel.effort || 'medium'}
 multiagent:
   type: multiagent_20261001
   workflows:
@@ -307,8 +314,8 @@ metadata:
   const typographyYaml = `name: Typography & Hierarchy Architect
 description: Enforces native font pairing, modular type scale (12px to 32px), architectural line heights, and zero em dashes.
 model:
-  id: gemini-3.8-flash
-  effort: medium
+  id: ${aiModel.modelId}
+  effort: ${aiModel.effort || 'medium'}
 multiagent:
   type: multiagent_20261001
   workflows:
@@ -370,8 +377,8 @@ metadata:
   const designPatternYaml = `name: Component Design Pattern Architect
 description: Governs component modularity, Atomic Design hierarchy (Atoms, Molecules, Organisms, Templates, Pages), and anti-slop UI standards.
 model:
-  id: gemini-3.8-flash
-  effort: medium
+  id: ${aiModel.modelId}
+  effort: ${aiModel.effort || 'medium'}
 multiagent:
   type: multiagent_20261001
   workflows:
@@ -466,8 +473,8 @@ ${sdlcCatalogSection}
     const phaseYaml = `name: SDLC Phase ${p.num} - ${p.name}
 description: ${p.desc}
 model:
-  id: gemini-3.8-flash
-  effort: medium
+  id: ${aiModel.modelId}
+  effort: ${aiModel.effort || 'medium'}
 multiagent:
   type: multiagent_20261001
   workflows:
@@ -599,8 +606,8 @@ Role Boundaries:
     const roleYaml = `name: ${roleName} Agent
 description: ${spec.desc}
 model:
-  id: gemini-3.8-flash
-  effort: medium
+  id: ${aiModel.modelId}
+  effort: ${aiModel.effort || 'medium'}
 multiagent:
   type: multiagent_20261001
   workflows:
@@ -645,6 +652,62 @@ metadata:
 `;
     writeFile(path.join(rolesDir, spec.filename), roleYaml);
   });
+
+  // 9. Root IDE & Agent Integration Bridges (Dynamic Multi-Platform Parity)
+  // Ensures Claude, Cursor, and Copilot automatically adhere to .agents protocols
+  const claudeMd = `# Claude AI Assistant Operating Protocol
+
+Welcome Claude. This project is strictly governed by the Autonomous Agent SDLC Protocol defined in [.agents/rules/AGENTS.md](.agents/rules/AGENTS.md).
+
+## Project Specifications:
+- **Project**: ${projectName}
+- **Active SDLC Framework**: ${sdlc.name}
+- **Handshake Sequence**: \`${sdlc.flow}\`
+- **Active Model Configuration**: \`${aiModel.modelId}\`
+
+## Mandatory Operational Rules for Claude:
+1. **Sequential Handshake Protocol**:
+   - Before executing code, inspect the current ticket state in [.agents/workflow-contract.md](.agents/workflow-contract.md).
+   - Only execute actions permitted for the active role boundary.
+   - Record your sign-off in [.agents/workflow-contract.md](.agents/workflow-contract.md) upon completion.
+2. **Design System Token Discipline**:
+   - Strictly consume color tokens from [.agents/design-system/color-palette.yaml](.agents/design-system/color-palette.yaml).
+   - Zero hardcoded hex colors in CSS or components. Use CSS variables: var(--bg-canvas), var(--bg-surface), var(--text-primary), etc.
+3. **Anti-Slop Hard Gates**:
+   - Absolute ban on em dashes and en dashes across all files. Use hyphens (-) only.
+   - Zero decorative emojis in UI or headings; use semantic SVG icons instead.
+   - Minimum 44x44px touch targets on all interactive controls.
+`;
+  writeFile(path.join(targetDir, 'CLAUDE.md'), claudeMd);
+
+  const cursorRules = `# Cursor AI Project Rules & Governance
+
+This project is governed by the AI agent protocol in .agents/rules/AGENTS.md.
+
+Key Constraints:
+1. Architecture & Tech Stack: .agents/design-system/tech-stack.yaml
+2. Design Tokens: .agents/design-system/color-palette.yaml (Zero hardcoded colors, use CSS variables)
+3. Typography: .agents/design-system/typography.yaml (Modular scale, system fonts)
+4. Component Conventions: .agents/design-system/design-pattern.yaml (Min 44px touch targets)
+5. Workflow Ledger: .agents/workflow-contract.md (Respect sequential role sign-offs)
+6. Anti-Slop Gates: Absolute ban on em dashes and en dashes. Use hyphens (-) only.
+`;
+  writeFile(path.join(targetDir, '.cursorrules'), cursorRules);
+
+  const githubDir = path.join(targetDir, '.github');
+  if (!fs.existsSync(githubDir)) {
+    fs.mkdirSync(githubDir, { recursive: true });
+  }
+  const copilotInstructions = `# GitHub Copilot Custom Instructions
+
+This project follows the governance protocols defined in .agents/rules/AGENTS.md.
+- Active SDLC: ${sdlc.name} (\`${sdlc.flow}\`)
+- Active Model ID: \`${aiModel.modelId}\`
+- Consume design tokens exclusively from .agents/design-system/color-palette.yaml
+- Adhere to the sequential handshakes in .agents/workflow-contract.md
+- Ban em dashes and en dashes across all files. Use hyphens (-) only.
+`;
+  writeFile(path.join(githubDir, 'copilot-instructions.md'), copilotInstructions);
 
   return {
     agentsRoot,

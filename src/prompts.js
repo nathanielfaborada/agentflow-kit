@@ -9,7 +9,9 @@ const {
   TECH_STACK_PRESETS,
   COLOR_PALETTES,
   SQUAD_PRESETS,
+  AI_MODEL_PROVIDERS,
 } = require('./presets');
+const { detectEnvironment } = require('./detector');
 
 function createInterface() {
   return readline.createInterface({
@@ -108,6 +110,20 @@ async function runInteractiveWizard() {
       1
     );
 
+    const autoDetect = detectEnvironment();
+    console.log(`\n>> Auto-Detector: Detected environment: ${autoDetect.provider} (${autoDetect.rationale})`);
+
+    const modelKeys = Object.keys(AI_MODEL_PROVIDERS);
+    const detectedIndex = modelKeys.indexOf(autoDetect.id);
+    const defaultModelIndex = detectedIndex !== -1 ? detectedIndex + 1 : 1;
+
+    const modelKey = await askChoice(
+      rl,
+      `7. Choose your AI Model & Runtime Engine (Dynamic Auto-Detection):`,
+      AI_MODEL_PROVIDERS,
+      defaultModelIndex
+    );
+
     rl.close();
 
     return {
@@ -121,6 +137,8 @@ async function runInteractiveWizard() {
       palette: COLOR_PALETTES[paletteKey],
       squadKey,
       squad: SQUAD_PRESETS[squadKey],
+      modelKey,
+      aiModel: AI_MODEL_PROVIDERS[modelKey] || autoDetect,
     };
   } catch (err) {
     rl.close();

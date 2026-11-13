@@ -13,6 +13,7 @@ const {
   COLOR_PALETTES,
   SQUAD_PRESETS,
 } = require('../src/presets');
+const { detectEnvironment } = require('../src/detector');
 
 const args = process.argv.slice(2);
 
@@ -43,7 +44,9 @@ async function main() {
   let config;
 
   if (args.includes('--quick')) {
-    console.log('\n[agentflow-kit] Running quick setup with standard defaults...');
+    const detected = detectEnvironment(targetDir);
+    console.log(`\n[agentflow-kit] Auto-detected environment: ${detected.provider} (${detected.rationale})`);
+    console.log('[agentflow-kit] Running quick setup with standard defaults...');
     config = {
       projectName: path.basename(targetDir) || 'My Application',
       authorName: 'Developer',
@@ -51,6 +54,7 @@ async function main() {
       stack: TECH_STACK_PRESETS.react,
       palette: COLOR_PALETTES['warm-coffee'],
       squad: SQUAD_PRESETS.full_squad,
+      aiModel: detected,
     };
   } else {
     config = await runInteractiveWizard();

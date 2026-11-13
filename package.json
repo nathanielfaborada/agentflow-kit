@@ -1,0 +1,34 @@
+{
+  "name": "agentflow-kit",
+  "version": "1.0.0",
+  "description": "Interactive AI Agent Governance & SDLC Scaffolding Tool. Stop AI hallucinations and enforce sequential handshake engineering protocols.",
+  "main": "src/index.js",
+  "bin": {
+    "agentflow-kit": "./bin/cli.js",
+    "create-agentflow": "./bin/cli.js"
+  },
+  "keywords": [
+    "ai-agents",
+    "sdlc",
+    "governance",
+    "antislop",
+    "scaffolding",
+    "cli",
+    "guardrails",
+    "autonomous-agents",
+    "agile"
+  ],
+  "author": "Nathaniel Faborada <143235940+nathanielfaborada@users.noreply.github.com> (https://github.com/nathanielfaborada)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathanielfaborada/agentflow-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nathanielfaborada/agentflow-kit/issues"
+  },
+  "homepage": "https://github.com/nathanielfaborada/agentflow-kit#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

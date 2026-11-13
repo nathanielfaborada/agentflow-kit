@@ -4,7 +4,12 @@
  */
 
 const readline = require('readline');
-const { TECH_STACK_PRESETS, COLOR_PALETTES, SQUAD_PRESETS } = require('./presets');
+const {
+  SDLC_METHODOLOGIES,
+  TECH_STACK_PRESETS,
+  COLOR_PALETTES,
+  SQUAD_PRESETS,
+} = require('./presets');
 
 function createInterface() {
   return readline.createInterface({
@@ -31,8 +36,9 @@ function askChoice(rl, query, options, defaultIndex = 1) {
     keys.forEach((key, idx) => {
       const item = options[key];
       const label = item.name || key;
+      const badge = item.badge ? ` [${item.badge}]` : '';
       const isDefault = idx + 1 === defaultIndex ? ' (default)' : '';
-      console.log(`  [${idx + 1}] ${label}${isDefault}`);
+      console.log(`  [${idx + 1}] ${label}${badge}${isDefault}`);
     });
 
     rl.question(`Select option [1-${keys.length}]: `, (answer) => {
@@ -74,23 +80,30 @@ async function runInteractiveWizard() {
       'Developer'
     );
 
+    const sdlcKey = await askChoice(
+      rl,
+      '3. Choose your SDLC Methodology (13 Frameworks Available):',
+      SDLC_METHODOLOGIES,
+      1 // Scrum (Sprint-based Handshake) as default
+    );
+
     const stackKey = await askChoice(
       rl,
-      '3. Choose your Tech Stack:',
+      '4. Choose your Tech Stack:',
       TECH_STACK_PRESETS,
       1
     );
 
     const paletteKey = await askChoice(
       rl,
-      '4. Choose your Design System Color Aesthetic:',
+      '5. Choose your Design System Color Aesthetic:',
       COLOR_PALETTES,
       1
     );
 
     const squadKey = await askChoice(
       rl,
-      '5. Choose your AI Agent Squad Structure:',
+      '6. Choose your AI Agent Squad Structure:',
       SQUAD_PRESETS,
       1
     );
@@ -100,6 +113,8 @@ async function runInteractiveWizard() {
     return {
       projectName,
       authorName,
+      sdlcKey,
+      sdlc: SDLC_METHODOLOGIES[sdlcKey],
       stackKey,
       stack: TECH_STACK_PRESETS[stackKey],
       paletteKey,

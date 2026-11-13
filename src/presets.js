@@ -1,6 +1,128 @@
 /**
  * agentflow-kit Presets & Default Configurations
+ * Supporting 13 Standard Software Development Life Cycle (SDLC) Methodologies.
  */
+
+const SDLC_METHODOLOGIES = {
+  scrum: {
+    id: 'scrum',
+    name: 'Scrum (Sprint-based Handshake)',
+    badge: 'RECOMMENDED',
+    description: 'Time-boxed sprint cycles with strict role boundaries: Product Owner -> Scrum Master -> Developer -> QA Auditor -> DevOps.',
+    bestFor: 'Modern web apps, portfolios, and SaaS products requiring clear audit trails and zero hallucinated features.',
+    flow: 'PO Specification -> SM Task Inception -> Dev Implementation -> QA Certification -> DevOps Release -> Support Audit',
+    roles: ['Product Owner', 'Scrum Master', 'Software Developer', 'QA Engineer', 'DevOps Engineer', 'Support Engineer'],
+    ledgerType: 'sprint_ledger',
+  },
+  agile: {
+    id: 'agile',
+    name: 'Agile (Adaptive & User-Centric)',
+    description: 'Iterative, highly responsive protocol prioritizing working code and rapid user feedback over rigid phase documentation.',
+    bestFor: 'Evolving products where requirements shift frequently based on live user testing.',
+    flow: 'User Feedback -> Backlog Refinement -> Iterative Coding -> Continuous Verification -> Rapid Deployment',
+    roles: ['Product Owner', 'Software Developer', 'QA Engineer'],
+    ledgerType: 'agile_iterations',
+  },
+  kanban: {
+    id: 'kanban',
+    name: 'Kanban (Continuous Flow & WIP Limits)',
+    description: 'Pull-based continuous delivery flow with strict Work-In-Progress (WIP) limits per agent to prevent bottleneck pileups.',
+    bestFor: 'Maintenance, bug fixing, continuous operations, and rapid incremental enhancements.',
+    flow: 'Backlog -> Selected -> In Progress -> In Review (QA) -> Production Done',
+    roles: ['Software Developer', 'QA Engineer', 'DevOps Engineer'],
+    ledgerType: 'kanban_board',
+  },
+  waterfall: {
+    id: 'waterfall',
+    name: 'Waterfall (Linear Sequential Gateways)',
+    description: 'Strict downward linear phases where a phase must be 100% completed and formally signed off before the next phase begins.',
+    bestFor: 'Fixed-budget contracts, regulated compliance architectures, and non-negotiable scope delivery.',
+    flow: 'Requirements Analysis -> System Architecture -> Concrete Implementation -> Full System Verification -> Production Deployment',
+    roles: ['Systems Architect', 'Lead Developer', 'QA Verification Officer', 'Release Manager'],
+    ledgerType: 'linear_gates',
+  },
+  v_model: {
+    id: 'v_model',
+    name: 'V-Model (Verification & Validation)',
+    description: 'Paired execution where every design phase has an exact corresponding testing level (Requirements <-> Acceptance, Architecture <-> Integration, Code <-> Unit).',
+    bestFor: 'High-reliability systems, security-critical modules, and zero-defect requirements.',
+    flow: 'Requirements (Acceptance Test Plan) -> Architecture (Integration Test Plan) -> Module Design (Unit Test Plan) -> Coding -> Unit Tests -> Integration Tests -> Acceptance Certification',
+    roles: ['Systems Analyst', 'Software Developer', 'Test Automation Engineer', 'Validation Auditor'],
+    ledgerType: 'paired_verification',
+  },
+  devops: {
+    id: 'devops',
+    name: 'DevOps (Continuous Automated Lifecycle)',
+    description: 'Infinite loop combining development and IT operations: Plan, Code, Build, Test, Release, Deploy, Operate, and Monitor.',
+    bestFor: 'Cloud-native services, microservices, and continuous delivery platforms.',
+    flow: 'Plan -> Code -> Automated Build -> Automated Test -> CD Pipeline -> Production Deploy -> Health Monitor',
+    roles: ['DevOps Lead', 'Full-Stack Developer', 'QA Automation Engineer', 'Site Reliability Engineer (SRE)'],
+    ledgerType: 'cicd_pipeline',
+  },
+  lean: {
+    id: 'lean',
+    name: 'Lean (Zero-Waste & MVP Accelerator)',
+    description: 'Eliminates all fluff, unnecessary documentation, and unproven features. Fast delivery of minimum viable increments.',
+    bestFor: 'Early startups, proof-of-concept experiments, and solo founders moving at maximum speed.',
+    flow: 'Identify Value -> Eliminate Waste -> Rapid MVP Build -> Measure Value -> Iterate or Pivot',
+    roles: ['Product Strategist', 'Full-Stack Builder'],
+    ledgerType: 'lean_experiments',
+  },
+  prototype: {
+    id: 'prototype',
+    name: 'Prototype (Evolutionary Mockup Iteration)',
+    description: 'Rapid creation of interactive prototypes to validate UX and concept feasibility before committing to final architecture.',
+    bestFor: 'Complex UI/UX exploration, innovative interaction patterns, and client concept buy-in.',
+    flow: 'Concept Brief -> Rapid UI Prototype -> User / Client Evaluation -> Refine Mockup -> Final Production Code',
+    roles: ['UX / Product Designer', 'UI Developer', 'Client / User Proxy'],
+    ledgerType: 'prototype_iterations',
+  },
+  rad: {
+    id: 'rad',
+    name: 'Rapid Application Development (RAD)',
+    description: 'Focuses on rapid prototyping and component reusability over strict upfront planning. Heavy use of modular pre-built blocks.',
+    bestFor: 'Tight deadline internal tools, MVPs, and projects leveraging established UI libraries.',
+    flow: 'Requirements Planning -> User Design Workshop -> Rapid Construction -> Cutover / Deployment',
+    roles: ['Business Analyst', 'Rapid Application Developer', 'User Representative'],
+    ledgerType: 'rad_modules',
+  },
+  xp: {
+    id: 'xp',
+    name: 'Extreme Programming (XP)',
+    description: 'High-discipline engineering practices: Test-Driven Development (TDD), automated unit testing, continuous refactoring, and pair-reviewing.',
+    bestFor: 'Complex mathematical logic, financial algorithms, and codebases where defect escape is catastrophic.',
+    flow: 'User Story -> Failing Test Suite (TDD) -> Minimal Code to Pass -> Aggressive Refactor -> Continuous Integration',
+    roles: ['Pair Developer A (Author)', 'Pair Developer B (Auditor / Reviewer)', 'Test Automation Engineer'],
+    ledgerType: 'tdd_ledger',
+  },
+  iterative: {
+    id: 'iterative',
+    name: 'Iterative (Incremental Feature Growth)',
+    description: 'Develops a barebones working system first, then adds complexity and feature modules incrementally release by release.',
+    bestFor: 'Large systems where getting a working core live early is essential while other modules are developed.',
+    flow: 'Initial Core Architecture -> Release 1 (Core) -> Analysis -> Release 2 (Module A) -> Analysis -> Release 3 (Module B)',
+    roles: ['Solution Architect', 'Core Developer', 'Module Developer', 'QA Inspector'],
+    ledgerType: 'incremental_releases',
+  },
+  spiral: {
+    id: 'spiral',
+    name: 'Spiral (Risk-Driven Exploration)',
+    description: 'Combines iterative prototyping with heavy risk assessment at each loop before advancing to higher fidelity development.',
+    bestFor: 'High-risk innovative projects with high technical uncertainty or unproven APIs.',
+    flow: 'Determine Objectives -> Identify & Resolve Risks -> Develop & Verify Prototype -> Review & Plan Next Loop',
+    roles: ['Risk Analyst', 'Systems Engineer', 'Security & QA Auditor'],
+    ledgerType: 'spiral_loops',
+  },
+  big_bang: {
+    id: 'big_bang',
+    name: 'Big Bang (High-Velocity Hackathon)',
+    description: 'Zero ceremonial overhead. All effort is channeled directly into raw code execution, assembling the solution all at once.',
+    bestFor: 'Hackathons, overnight prototypes, academic experiments, and emergency hotfixes.',
+    flow: 'Raw Problem Prompt -> Direct Intensive Coding -> Integration Dump -> Sanity Smoke Test',
+    roles: ['Lead Hacker / Developer'],
+    ledgerType: 'hackathon_log',
+  },
+};
 
 const TECH_STACK_PRESETS = {
   react: {
@@ -132,6 +254,7 @@ const SQUAD_PRESETS = {
 };
 
 module.exports = {
+  SDLC_METHODOLOGIES,
   TECH_STACK_PRESETS,
   COLOR_PALETTES,
   SQUAD_PRESETS,

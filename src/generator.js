@@ -1,10 +1,11 @@
 /**
  * agentflow-kit Generator Engine
- * Generates the standardized .agents directory structure based on answers.
+ * Generates the standardized .agents directory structure tailored to the selected SDLC methodology.
  */
 
 const fs = require('fs');
 const path = require('path');
+const { SDLC_METHODOLOGIES } = require('./presets');
 
 function generateAgentsDirectory(targetDir, config) {
   const agentsRoot = path.join(targetDir, '.agents');
@@ -24,6 +25,7 @@ function generateAgentsDirectory(targetDir, config) {
   const authorName = config.authorName || 'Developer';
   const stack = config.stack;
   const palette = config.palette;
+  const sdlc = config.sdlc || SDLC_METHODOLOGIES.scrum;
 
   // 1. .agents/rules/AGENTS.md
   const agentsRules = `# AI Assistant Project Rules & Master Operational Protocol
@@ -32,15 +34,18 @@ This document is the primary governing authority for all AI agents working on ${
 
 ---
 
-## 1. Governance Architecture
+## 1. Governance Architecture & SDLC Framework
 
+- **Active SDLC Framework**: ${sdlc.name}
+- **Operating Methodology**: ${sdlc.description}
+- **Lifecycle Flow**: \`${sdlc.flow}\`
 - Workflow Contract & State Ledger: .agents/workflow-contract.md
 - Frontend Architecture & Design System: .agents/design-system/
   - Tech Stack: .agents/design-system/tech-stack.yaml
   - Design Pattern: .agents/design-system/design-pattern.yaml
   - Typography: .agents/design-system/typography.yaml
   - Color Palette: .agents/design-system/color-palette.yaml
-- Agile SDLC Manifests: .agents/SDLC/
+- SDLC Manifests & Gate Checklists: .agents/SDLC/
 - Custom Project Roles: .agents/project-roles/
 
 ---
@@ -48,8 +53,8 @@ This document is the primary governing authority for all AI agents working on ${
 ## 2. Anti-Hallucination & Sequential Handshake Protocol
 
 1. **State-Driven Progression**:
-   - Work flows sequentially: Product Owner -> Scrum Master -> Software Developer -> QA Engineer -> DevOps Engineer -> Support Engineer.
-   - No agent may initiate execution without reading and validating the preceding agent sign-off in .agents/workflow-contract.md.
+   - Work flows sequentially strictly conforming to the active lifecycle: \`${sdlc.flow}\`.
+   - No agent may initiate execution without reading and validating the preceding role sign-off in .agents/workflow-contract.md.
    - If an input ticket or sign-off is missing or rejected (FAIL), execution stops immediately.
 
 2. **Single Source of Grounded Truth**:
@@ -85,7 +90,7 @@ All UI implementations must strictly consume tokens defined in .agents/design-sy
    - Universal :focus-visible outline rings on all focusable controls.
    - Skip-to-content anchor must remain functional on all page layouts.
 4. **Anti-Slop Hard Gates**:
-   - Absolute ban on em dashes and en dashes in all UI copy and documentation. Use hyphens only.
+   - Absolute ban on em dashes and en dashes in all UI copy and documentation. Use hyphens (-) only.
    - Zero decorative emojis; use semantic SVG icons instead.
    - Zero generic blue/purple gradient backgrounds or floating glow orbs.
    - Zero dead buttons; every button or link must trigger a valid route or action.
@@ -94,19 +99,21 @@ All UI implementations must strictly consume tokens defined in .agents/design-sy
   fs.writeFileSync(path.join(rulesDir, 'AGENTS.md'), agentsRules, 'utf8');
 
   // 2. .agents/workflow-contract.md
-  const workflowContract = `# Sprint Workflow Contract & State Ledger
+  const workflowContract = `# ${projectName} - Workflow Contract & State Ledger
 
-This ledger records the formal sign-offs between autonomous roles. Work flows sequentially:
-\`Product Owner -> Scrum Master -> Software Developer -> QA Engineer -> DevOps Engineer -> Support Engineer\`.
+Active SDLC Framework: **${sdlc.name}**  
+Sequential Protocol: \`${sdlc.flow}\`
+
+This ledger records the formal sign-offs between autonomous roles. No agent may execute out of turn.
 
 ---
 
-## Sprint 1: Project Initialization & Architecture Baseline
+## Cycle 1: Baseline Architecture & Project Initialization
 
-### Phase 1: Product Owner Story Specification (Requirement)
-- **Ticket ID**: AGY-PO-SP01-001
+### Phase 1: Requirements & Story Specification
+- **Ticket ID**: AGY-PO-C01-001
 - **Status**: APPROVED
-- **User Story**: As a visitor to ${projectName}, I want a solid, responsive, accessible foundation with consistent design system tokens and clean navigation.
+- **User Story**: As a user of ${projectName}, I want an accessible, responsive application with grounded design tokens conforming to the ${sdlc.name} process.
 - **Scope & Acceptance Criteria**:
   - Baseline architecture established according to tech-stack.yaml.
   - Zero hardcoded colors; tokens consumed from color-palette.yaml.
@@ -114,36 +121,36 @@ This ledger records the formal sign-offs between autonomous roles. Work flows se
   - Zero em dashes and en dashes across all copy and documentation.
 - **PO Sign-off**: APPROVED
 
-### Phase 2: Scrum Master Sprint Task (Inception)
-- **Assigned Sprint**: Sprint 1: Project Initialization & Architecture Baseline
+### Phase 2: Inception & Task Breakdown
+- **Assigned Cycle**: Cycle 1: Baseline Architecture & Project Initialization
 - **Status**: PASS
 - **Target File Boundary**: Application root, layout components, and styles
 - **Definition of Done (DoD)**:
   - Repository compiles without errors.
   - 44x44px minimum touch targets maintained.
   - Design system tokens mapped to CSS custom properties.
-- **SM Sign-off**: APPROVED
+- **SM / Planning Sign-off**: APPROVED
 
-### Phase 3: Software Developer Implementation Log (Development)
+### Phase 3: Software Implementation
 - **Status**: READY_FOR_QA
 - **Implemented Files**: Baseline project scaffolding and token bindings.
 - **Dev Sign-off**: IMPLEMENTED
 
-### Phase 4: QA Engineer Certification (Verification)
+### Phase 4: Quality Assurance & Gate Certification
 - **Status**: CERTIFIED
 - **Visual & Responsive Audit**: Layout verified responsive; 0 console errors; 0 broken links.
 - **Anti-Slop Hard Gates**: 0 em dashes, 0 en dashes, 0 decorative emojis, 0 hardcoded colors.
 - **QA Sign-off**: CERTIFIED
 
-### Phase 5: DevOps Engineer Release Log (Delivery)
+### Phase 5: Build & Release Verification
 - **Status**: DEPLOYED
 - **Build Command**: Clean build verified.
-- **DevOps Sign-off**: RELEASED
+- **DevOps / Release Sign-off**: RELEASED
 
-### Phase 6: Support Engineer Post-Release Audit (Monitoring)
+### Phase 6: Post-Release Monitoring & Delivery Gate
 - **Status**: ACTIVE_MONITORING
 - **Delivery Gate Score**: 100/100
-- **Support Sign-off**: STABLE
+- **Support / Ops Sign-off**: STABLE
 `;
 
   fs.writeFileSync(path.join(agentsRoot, 'workflow-contract.md'), workflowContract, 'utf8');
@@ -154,6 +161,7 @@ This ledger records the formal sign-offs between autonomous roles. Work flows se
 project:
   name: "${projectName}"
   author: "${authorName}"
+  sdlc_framework: "${sdlc.name}"
   tier: "production"
 
 technology:
@@ -229,30 +237,34 @@ principles:
   fs.writeFileSync(path.join(designDir, 'design-pattern.yaml'), designPatternYaml, 'utf8');
 
   // 7. .agents/SDLC/PHASE-GATES.md
-  const phaseGatesMd = `# Agile SDLC Phase Gates & Handshake Protocols
+  let sdlcCatalogSection = Object.values(SDLC_METHODOLOGIES)
+    .map(
+      (m) =>
+        `### ${m.name}${m.badge ? ` [${m.badge}]` : ''}\n- **Flow**: \`${m.flow}\`\n- **Best For**: ${m.bestFor}\n- **Description**: ${m.description}\n`
+    )
+    .join('\n');
 
-All work in ${projectName} flows strictly through six sequential phases:
+  const phaseGatesMd = `# SDLC Phase Gates & Handshake Protocols
 
-1. **Phase 1: Product Owner (PO) Specification**
-   - Must define Ticket ID, User Story, Scope, and Acceptance Criteria.
-   - Prohibited from modifying code or styles directly.
+Active Framework for ${projectName}: **${sdlc.name}**  
+Operational Flow: \`${sdlc.flow}\`
 
-2. **Phase 2: Scrum Master (SM) Inception**
-   - Validates PO ticket, assigns Sprint, sets Target File Boundaries, and defines Definition of Done (DoD).
+---
 
-3. **Phase 3: Software Developer Implementation**
-   - Implements within strict boundaries.
-   - Banned from self-approving QA or deploying.
+## 1. Active Framework Gate Protocol
+${sdlc.description}
 
-4. **Phase 4: QA Engineer Certification**
-   - Read-only audit on source code.
-   - Verifies responsiveness, touch targets, accessibility, and Anti-Slop hard gates (0 em/en dashes, 0 hardcoded colors).
+### Mandatory Gate Checkpoints:
+1. **Requirements Sign-off**: Clear scope and non-ambiguous acceptance criteria.
+2. **Boundary Conformance**: Agents work strictly within assigned scopes without overlap.
+3. **QA Certification**: Read-only validation verifying zero regressions and anti-slop rules.
+4. **Delivery & Deployment**: Build verification and live health score validation.
 
-5. **Phase 5: DevOps Engineer Delivery**
-   - Executes build commands and verifies production artifacts.
+---
 
-6. **Phase 6: Support Engineer Post-Release Audit**
-   - Monitors live health, link validity, and sets Delivery Gate Score (100/100).
+## 2. Master Catalog of 13 SDLC Frameworks Supported by agentflow-kit
+
+${sdlcCatalogSection}
 `;
 
   fs.writeFileSync(path.join(sdlcDir, 'PHASE-GATES.md'), phaseGatesMd, 'utf8');
@@ -260,14 +272,19 @@ All work in ${projectName} flows strictly through six sequential phases:
   // 8. .agents/project-roles/ROLES.md
   const rolesMd = `# Autonomous AI Agent Project Roles
 
-Detailed definitions for all squad members operating on ${projectName}:
+Project: ${projectName}  
+Active SDLC: ${sdlc.name}
 
-- **Product Owner**: Owns business logic, user stories, grounding data, and acceptance criteria.
-- **Scrum Master**: Owns sprint planning, task breakdown, boundary enforcement, and DoD.
-- **Software Developer**: Owns application source code, components, hooks, and stylesheets.
-- **QA Engineer**: Independent auditor validating visual aesthetics, anti-slop rules, and test suites.
-- **DevOps Engineer**: Owns build tools, bundler configurations, dependencies, and deployment pipelines.
-- **Support Engineer**: Owns post-release monitoring, regression testing, and client incident triage.
+Designated Role Squad:
+${sdlc.roles.map((r) => `- **${r}**`).join('\n')}
+
+Role Boundaries:
+- **Product / Requirements Leads**: Own user stories, business rules, and acceptance criteria.
+- **Architects / Planning Leads**: Own technical boundaries, task breakdown, and Definition of Done.
+- **Developers / Builders**: Own source code, components, hooks, and styles. Banned from self-approval.
+- **QA / Test Auditors**: Independent read-only verification of responsive layouts, tests, and anti-slop rules.
+- **DevOps / Release Engineers**: Own build manifests, bundling, CI/CD, and live artifact delivery.
+- **Operations / Support**: Own monitoring, link integrity, and post-release health scores.
 `;
 
   fs.writeFileSync(path.join(rolesDir, 'ROLES.md'), rolesMd, 'utf8');

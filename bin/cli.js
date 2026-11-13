@@ -7,7 +7,12 @@
 const path = require('path');
 const { runInteractiveWizard } = require('../src/prompts');
 const { generateAgentsDirectory } = require('../src/generator');
-const { TECH_STACK_PRESETS, COLOR_PALETTES, SQUAD_PRESETS } = require('../src/presets');
+const {
+  SDLC_METHODOLOGIES,
+  TECH_STACK_PRESETS,
+  COLOR_PALETTES,
+  SQUAD_PRESETS,
+} = require('../src/presets');
 
 const args = process.argv.slice(2);
 
@@ -42,6 +47,7 @@ async function main() {
     config = {
       projectName: path.basename(targetDir) || 'My Application',
       authorName: 'Developer',
+      sdlc: SDLC_METHODOLOGIES.scrum,
       stack: TECH_STACK_PRESETS.react,
       palette: COLOR_PALETTES['warm-coffee'],
       squad: SQUAD_PRESETS.full_squad,
